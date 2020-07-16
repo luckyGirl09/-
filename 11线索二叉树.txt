@@ -1,0 +1,19 @@
+在二叉树的结点上加上线索的二叉树称为线索二叉树，
+对二叉树以某种遍历方式（如先序、中序、后序或层次等）进行遍历，
+使其变为线索二叉树的过程称为对二叉树进行线索化。
+
+线索二叉树中的线索能记录每个结点前驱和后继信息。
+为了区别线索指针和孩子指针，在每个结点中设置两个标志ltag和rtag。
+
+当ltag和rtag为0时，leftChild和rightChild分别是指向左孩子和右孩子的指针；
+否则，leftChild是指向结点前驱的线索(pre)，rightChild是指向结点的后继线索(suc)。
+
+
+线索二叉树每个结点的定义类型如下：
+typedef char ElemType;
+typedef struct THBTNode
+{
+	ElemType data;
+	struct THBTNode *lchild,*rchild;
+	int ltag,rtag;
+}ThreadBT;

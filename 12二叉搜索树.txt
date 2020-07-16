@@ -1,0 +1,163 @@
+二叉查找树（Binary Search Tree）（又：二叉搜索树，二叉排序树）
+它或者是一棵空树，或者是具有下列性质的二叉树：
+1.若它的左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+2.若它的右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+3.它的左、右子树也分别为二叉排序树。
+
+struct TreeNode;
+typedef struct TreeNode *Position;
+typedef struct TreeNode *SerchTree;
+
+struct  TreeNode{
+	ElementType Element;
+	SearchTree  Left;
+	SearchTree  Right;
+}
+
+
+/* 创建一棵空树  */
+SearchTree MakeEmpty(   SearchTree  T  )
+{
+	if( T  != NULL)
+	{
+		MakeEmpty( T ->Left );
+		MakeEmpty( T ->Right );
+		free( T );
+	}
+	return NULL;
+}
+
+
+/*    二叉查找树的查找操作   */
+Position Find(  ElementType  X, SearchTree  T )
+{
+	if(T == NULL)
+	{
+		return NULL;
+	}
+	if( X < T -> Element)
+	{
+		return   Find( X, T ->Left );
+	}else if( X > T -> Element)
+	{
+		return   Find( X, T ->Right);
+	}else  
+		return  T;
+}
+	
+	
+/* FindMin递归操作  */	
+Position FindMin( SearchTree  T )
+{
+	if( T == NULL )
+	{
+		return NULL;
+	}else   if( T -> Left == NULL )
+	{
+		return  T;
+	}else  
+		return  FindMin( T ->Left );
+}
+
+/*  FindMax 递归操作  */
+Position FindMax( SearchTree T )
+{
+	if(  T == NULL )
+	{
+		return NULL;
+	}else if( T -> Right == NULL)
+	{
+		retun T;
+	}else 
+		return FinMax( T -> Right);
+}
+		
+/* FindMin  非递归操作  */
+Position FindMin( SearchTree  T )
+{
+	if( T != NULL )
+	{
+		while( T ->Left != NULL)
+		{
+			T = T ->Left;
+		}
+	}
+	return  T;	
+}
+
+
+/*  FindMax 非递归操作  */
+Position FindMax( SearchTree  T )
+{
+	if( T != NULL )
+	{
+		while( T ->Right != NULL)
+		{
+			T = T ->Right;
+		}
+	}
+	return  T;	
+}
+
+ /*  插入一个结点   */
+SearchTree  Insert( ElemType  X, SearchTree  T)
+{
+	if( T == NULL)	/* 若原树为空，生成并返回一个结点的二叉搜索树 */
+	{
+		T = malloc( sizeof( struct TreeNode ));
+		if( T == NULL)
+		{
+			return ERROR;
+		}else
+		{
+			T -> Element = X;
+			T ->Left = T ->Right =NULL;
+		}
+	}
+	else	/* 开始找要插入元素的位置 */
+	{
+		if( X < T -> Element)
+			T -> Left = Insert(  X, T -> Left );
+		else if( X > T -> Element)
+			T ->Right = Insert( X, T -> Right);
+	}
+	return T;
+}
+
+/*  删除操作 */
+SearchTree Delete( Element X, SearchTree T)
+{
+	Position TmpCell;
+	if( T == NULL)	//判断树是否为空
+	{
+		return ERROR;
+	}
+	else 
+	{
+		if( X < T ->Element)
+			T ->Left = Delete( X, T ->Left);	//递归向左
+		else if( X > T -> Element)
+			T ->Right = Delete( X, T ->Right);	//递归向右
+		else	//找到了这个结点
+		{
+			if( T -> Left && T ->Right)		//这个节点的左右子树都不空
+			{
+				TmpCell = FindMin( T -> Right );		//找到右子树上最小的那个节点，这个节点一定是叶子节点
+				T ->Element = TmpCell ->Element;		//把这个节点的值赋给要删除的节点
+				T ->Right = Delete( T ->Element,  T ->Right);	//递归删除这个值的结点
+			}
+			else		//只有一个孩子或者没有孩子
+			{
+				TmpCell = T;
+				if( T ->Left == NULL)
+					T = T ->Right;
+				else if( T ->Right == NULL)
+					T = T ->Left;
+				free( TmpCell);
+			}
+		}
+	}
+	return T;
+}
+					
+		

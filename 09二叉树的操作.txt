@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SUCCESS 1
+#define FALLURE 0
+
+//初始化二叉树
+void initBTree (BTreeNode *bt)
+{
+	bt = NULL;
+	return;
+}
+
+//构建二叉树(以先序序列建立)
+void CreateBiTree(BiTree &T)
+{
+	scanf("%c" ,&ch);
+	if(ch == '#')   T=NULL;
+	else{
+	if(!(T = (BiTree *) malloc (sizeof(BiTNode))))
+		exit(OVERFLOW);
+	T ->data = ch;
+	CreatBiTree(T ->lchild); 	//构造左子树
+	CreatBiTree(T ->rchild);	//构造右子树
+	}
+	returtn OK;
+}
+
+
+
+//复制二叉树
+如果是空树，递归结束
+否则，申请新的节点空间，复制根节点
+	递归复制左子树
+	递归复制右子树
+int Copy(BiTree T,  BiTree  &NewT)
+{
+	if(T ==NULL){
+		NewT = NULL;
+		return 0;
+	}
+	else{
+		NewT = new BiTNode;
+		BewT -> data = T -> data;
+		Copy(T -> lChild, NewT -> lchild);
+		Copy(T -> rChild, NewT -> rchild);
+	}
+	return OK;
+}
+
+
+//计算二叉树的深度
+int Depth(  BiTree  T){
+	if( T == NULL)  return 0;	//如果是空树返回0
+	else{
+		m = Depth(T -> lChild);	//m为左子树的高度
+		n = Depth(T -> rChild);	//n为右子树的高度
+		if(m>n)  return (m+1)
+		else  return (n+1);
+	}
+}
+
+//计算二叉树的节点总数
+如果是空树，则结点个数为0
+否则，结点个数为左子树的节点个数 + 右子树的节点个数 +1
+int NodeCount( BiTree T)
+{
+	if( T == NULL)
+		return  0;
+	else
+		return   NodeCount( T -> lchild) + NodeCount(T -> rchild) + 1;
+}
+
+
+//计算二叉树叶子节点数
+如果是空树，则叶子结点个数为0
+否则为左子树叶子节点个数 + 右子树叶子节点个数
+int LeafCount(BiTree  T){
+	if( T == NULL)
+		return 0;
+	if( T ->lchild == NULL && T -> rchild == NULL)
+		return 1;
+	else
+		return  LeafCount( T -> lchild)  +  LeafCount( T -> rchild);
+}
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,24 @@
+void CreatHuffmanCode(HuffmanTree HT, HuffmanCode &HC, int n)
+{
+//从叶子到根逆向求每个字符的哈夫曼编码，存储在编码表HC中
+	HC = new char *[n+1];	//分配n个字符编码的头指针
+	cd = new char [n];		//分配临时存放编码的动态数组空间
+	cd[n-1] = '\0';		//编码结束符
+	for(i = 1;  i<=n;  i++)	//逐个求哈夫曼编码
+	{
+		start = n-1;	
+		c = i;
+		f = HT[i].parent;	//从叶子节点开始向上回溯
+		while(f !=0){
+			--start;
+			if( HT[f].lchild == c)   cd[start] = '0';
+				else    cd[start] = '1';
+			c =  f; f = HT[f].parent;
+		}
+		HC[i] = new char[n-start];	//为第i个字符串编码分配空间
+		strcpy(HC[i], &cd[start]);
+	}
+	delet   cd;		//释放临时空间
+}
+	
+	

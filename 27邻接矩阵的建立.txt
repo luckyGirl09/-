@@ -1,0 +1,71 @@
+用两个数组分别存储定点表和邻接矩阵表
+
+创建无向网（其他类似）：
+
+//定义存储结构
+#define MaxInt 32767
+#define MVNum 100	//最大顶点数
+typedef char VerTexType;	//假设顶点的数据类型为字符型
+typedef int ArcType;	//假设边的权值类型为整型
+tepedef struct{
+	VerTexType vexs[MVNum];		//顶点表
+	ArcType arcs[MVNum][MVNum];	//邻接矩阵
+	int vexnum,arcnum;		//图的当前顶点数和边数
+}AMGraph;	//定义这个图的类型
+
+//建立无向网并且初始化
+①输入总定点数和边数
+②依次输入顶点信息存入顶点表中
+③初始化邻接矩阵，使每个权值都初始化为极大值
+④构造邻接矩阵
+
+Status CreatUDN(AMGraph  &G)
+{
+	int i,j,k;
+	cin>>G.vexnum>>G.arcnum;		//输入顶点数和边数
+	for(i = 0; i<G.vexnum; i++)
+	{
+		cin>>G.vexs[i];		//初始化顶点
+	}
+	for(i = 0; i<G.arcnum; i++)	
+	{
+		for(j = 0; j<G.arcnum; j++)
+		{
+			G.arcs[i][j] = MaxInt;	//初始化边的权值为最大值
+		}
+	}
+	for(k = 0; k<G.arcnum; k++)
+	{
+		cin>>v1>>v2>>w;		//输入一条边所依附的顶点以及边的权值
+		i = LocateVex(G, V1);	
+		j = LocateVex(G, V2);	//确定v1和v2在图中的位置
+		G.arcs[i][j] = w;		//边v1,v2的权值为w
+		G.arcs[j][i] = w;
+	}
+	return OK;
+}
+		
+//找出顶点下标位置的函数
+int  LocateVex(AMGraph  G,  VertexType u)
+{//在图中查找顶点u,存在则返回顶点表中的下标
+	int i;
+	for(i = 0; i<G.vexnum; i++)
+		if(u == G.vexs[i])  return i;
+	return -1;
+}
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

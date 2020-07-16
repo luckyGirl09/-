@@ -1,0 +1,138 @@
+堆（英语：heap)是计算机科学中一类特殊的数据结构的统称。堆通常是一个可以被看做一棵树的数组对象。
+堆总是满足下列性质：
+1.  有序性：堆中某个节点的值总是不大于或不小于其父节点的值；
+2.  结构性：堆总是一棵完全二叉树。
+将根节点最大的堆叫做最大堆或大根堆，根节点最小的堆叫做最小堆或小根堆。
+
+在优先队列中，元素被赋予优先级。当访问元素时，具有最高优先级的元素最先删除。
+优先队列具有最高级先出 （first in, largest out）的行为特征。通常采用堆数据结构来实现。
+
+MaxHeap CreateHeap( int MaxSize ) ：创建一个空的最大堆
+Boolean IsFull( MaxHeap H)：判断最大堆H是否已满
+Insert( MaxHeap H, ElementType item )：将元素item插入最大堆H
+Boolean IsEmpty( MaxHeap H )：判断最大堆H是否为空
+ElementType DeleteMax( MaxHeap H)：返回H中最大元素（高优先级）
+
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef  struct  HNode *Heap;		//堆的类型定义
+struct HNode{
+	ElementType *Data;		//存储堆元素的数组
+	int Size;			//堆的当前元素个数
+	int Capacity;		//堆的最大容量
+};
+typedef Heap MaxHeap;		//最大堆
+typedef Heap MinHeap;		//最小堆
+
+#define  MAXDATA  1000		//该值根据实际情况定义
+#define ERROR -1
+
+MaxHeap  CreateHeap( int MaxSize )	//创建容量为MaxSize的空的最大堆
+{
+	MaxHeap H = (MaxHeap) malloc (sizeof( struct HNode));
+	H -> data = ( ElementType *) malloc ((MaxSize+1)*sizeof(ElementType));
+	H -> Size = 0;
+	H -> Capacity = MaxSize;
+	H -> Data[0] = MAXDATA;	//定义哨兵，所以接下来堆元素从下标1开始存储
+
+	return H;
+}
+
+//判断堆是否已满
+bool IsFull( MaxHeap H )
+{
+	return ( H -> Size == H ->Capacity);
+}
+
+//将元素X插入最大堆中，先定位在最后一个元素下一个位置
+bool Insert( MaxHeap H, ElementType X )
+{
+	int i;
+	if( IsFull( H )){
+		printf("最大堆已满");
+		return false;
+	}
+	i = ++H -> Size;	// i指向插入后堆中最后一个元素的位置
+	for(; H -> Data[i/2] < X; i/=2)
+	{
+		H -> Data[i] = H -> Data[i/2];		//如果父节点元素比X小，则把父元素下移
+	}
+	H ->Data[i] = X;	//将X插入
+	return true;
+}
+
+
+//判断堆是否为空
+bool IsEmpty( MaxHeap H)
+{
+	return ( H -> Size == 0);
+}
+
+//删除最大元素（其实是取出最大值并返回，并删除一个节点）
+ElementType DeleteMax( MaxHeap H)
+{
+	int Parent,Child;
+	ElementType MaxItem,X;
+	if( IsEmpty(H) ){
+		printf("最大堆已空");
+		return ERROR;
+	}
+	MaxItem = H -> Data[1];	//取出根结点存放的最大值
+	X = H ->Data[ H ->Size -- ];    /* 用最大堆中最后一个元素从根结点开始向上过滤下层结点 */
+	for( Parent = 1; Parent * 2 <= H -> Size; Parent = Child )
+	{
+		Child = Parent *2;
+		if( (Child != H -> Size)  && (H ->Data[Child] < H ->Data[Child + 1]));
+			Child++;	/* Child指向左右子结点的较大者 */
+		if(X > H -> Data[Child])   break;	/* 找到了合适位置 */
+		else	/* 下滤X */
+			H ->Data[Parent] = H ->Data[Child];
+	}
+	H ->Data[Parent] = X;
+	return MaxItem;
+}
+
+
+//建造最大堆
+void PercDown( MaxHeap H, int p)
+{	/* 下滤：将H中以H->Data[p]为根的子堆调整为最大堆 */
+	int Parent,Child;
+	ElementType X;
+	X = H -> Data[p];	//取出根结点存放的值
+	for( Parent = p; Parent*2 <= H -> Size; Parent = Child)
+	{
+		Child = Parent *2;
+		if( (Child != H ->Size) && ( H ->Data[Child] < H -> Data[Child+1])
+			Child++;		/* Child指向左右子结点的较大者 */
+		if( X >= H -> Data[Child])  break;	/* 找到了合适位置 */
+		else	/* 下滤X */
+			H -> Data[Parent] = H -> Data[Child];
+	}
+	H -> Data[Parent] = X;
+}		
+
+void BuildHeap( MaxHeap H )
+{
+	/* 调整H->Data[]中的元素，使满足最大堆的有序性  */
+  	/* 这里假设所有H->Size个元素已经存在H->Data[]中 */
+
+	int i;
+	/* 从最后一个结点的父节点开始，到根结点1 */
+	for( i = H ->Size/2; i>0; i-- )
+	{
+		PercDown( H, i );
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+typedef struct TNode *Position;
+typedef Position BinTree; /* 二叉树类型 */
+struct TNode{ /* 树结点定义 */
+    ElementType Data; /* 结点数据 */
+    BinTree Left;     /* 指向左子树 */
+    BinTree Right;    /* 指向右子树 */
+};
+
+
+/*   前序遍历   根 -> 左 -> 右*/
+void PreorderTraversal(BinTree BT)
+{
+	if(BT){
+		printf("%d",BT->data);	/* 此处假设对BT结点的访问就是打印数据 */
+		PreorderTraversal(BT->left);
+		PreorderTraversal(BT->right);
+	}
+}
+
+/*    中序遍历     左 -> 根 -> 右*/
+void InorderTraversal(BinTree BT)
+{
+	if(BT){
+		InorderTraversal(BT->left);
+		printf("%d",BT->data);
+		InorderTraversal(BT->right);
+	}
+}
+
+
+/*     后序遍历     左 -> 右 -> 根 */
+void PostorderTraversal(BinTree BT)
+{
+	if(BT){
+		PostorderTraversal(BT->left);
+		PostorderTraversal(BT->right);
+		printf("%d",BT->data);
+	}
+}
+
+
+
+/*   中序遍历的非递归算法 用堆栈    */
+void InorderTraversal(BinTree BT)
+{
+	BinTree T = BT;
+	Stack S = CreatStack( Maxsize );	//创建并初始化堆栈s
+	while(T || !IsEmpty(S)){
+		while(T){		// 一直向左并将沿途结点压入堆栈
+			Push(S,T);
+			 T = T->left;
+		}
+		if(!IsEmpty(S)){
+			T = Pop(S);	// 结点弹出堆栈
+			printf("%5d",T->data);	// 访问节点的数据域
+			T = T ->right;	// 转向右子树
+		}
+	}
+}
+
+
+/* 层序遍历   用队列实现 */
+void  LevelorderTraversal(BinTree BT)
+{
+	Queue Q;
+	BinTree T;
+	if(!BT) return;    //若是空树直接返回
+	Q = CreatQueue();  	//创建空队列
+	Add(Q,BT)；
+	while( !IsEmpty(Q) )
+	{
+		T = DeleteQ( Q );
+		printf("%d",T->data);	/* 访问取出队列的结点 */	
+		if( T -> Left)  AddQ( Q,T-<Left);
+		if ( T->Right )  AddQ( Q, T->Right );
+	}
+}
+	
+	
+			
